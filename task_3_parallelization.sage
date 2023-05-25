@@ -9,8 +9,8 @@ import argparse
 from claasp.utils.sage_scripts import get_ciphers, get_cipher_type
 
 
-if os.path.exists('LOGS/task-3') == False:
-    os.makedirs('LOGS/task-3')
+if os.path.exists('LOGS/task_3') == False:
+    os.makedirs('LOGS/task_3')
 
 
 
@@ -20,10 +20,10 @@ commands = []
 for cipher in ['speck_block_cipher.py', 'midori_block_cipher']:
     for model in ['sat', 'smt', 'cp', 'milp']:
         for solver in constants.MODEL_LIST[model]['solver_list']:
-            cmd = ['sage', 'scripts/task-3.sage', '-m', model, '-s', solver, '-c' ,cipher, '-r', str(constants.fixed_differential[cipher][4])]
+            cmd = ['sage', 'scripts/task_3.sage', '-m', model, '-s', solver, '-c' ,cipher, '-r', str(constants.fixed_differential[cipher][4])]
             commands.append(cmd)
 
-procs = [Popen(i, stdout=open(f'LOGS/task-3/{i[7].split("_")[0]}.txt','a'), stderr=open(f'LOGS/task-3/{i[7].split("_")[0]}_ERR.txt','a')) for i in commands]
+procs = [Popen(i, stdout=open(f'LOGS/task_3/{i[7].split("_")[0]}.txt','a'), stderr=open(f'LOGS/task_3/{i[7].split("_")[0]}_ERR.txt','a')) for i in commands]
 
 for p in procs:
     p.communicate()

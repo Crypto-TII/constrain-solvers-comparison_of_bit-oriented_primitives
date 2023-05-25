@@ -20,16 +20,16 @@ if os.path.exists('LOGS/') == False:
     os.makedirs('LOGS/')
 
 
-if os.path.exists('LOGS/task-2/') == False:
-    os.makedirs('LOGS/task-2/')
+if os.path.exists('LOGS/task_2/') == False:
+    os.makedirs('LOGS/task_2/')
 
 
 commands = []
 for model in ['cp','sat','smt','milp']:
-    cmd_list = ['sage', 'scripts/task-2.sage', '-m', model]
+    cmd_list = ['sage', 'scripts/task_2.sage', '-m', model]
     commands.append(cmd_list)
         
-procs = [Popen(i, stdout=open(f'LOGS/task-2/{i[3]}.txt','a'), stderr=open(f'LOGS/task-2/{i[3]}_ERR.txt','a')) for i in commands]
+procs = [Popen(i, stdout=open(f'LOGS/task_2/{i[3]}.txt','a'), stderr=open(f'LOGS/task_2/{i[3]}_ERR.txt','a')) for i in commands]
 time = 0.0
          
 while len(procs) > 0:
