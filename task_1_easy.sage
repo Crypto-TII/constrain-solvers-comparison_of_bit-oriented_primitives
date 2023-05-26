@@ -144,7 +144,7 @@ if __name__ == "__main__":
                                 f'claasp.cipher_modules.models.{args.model}.{args.model}_models'
                                 f'.{args.model}_xor_differential_trail_search_model')
                             model_capitalised = args.model.capitalize()
-                            model_class = getattr(module, f'{model_capitalised}XorDifferentialModel')
+                            model_class = getattr(module, f'{model_capitalised}XorDifferentialTrailSearchModel')
                         else:
                             module = import_module(
                                 f'claasp.cipher_modules.models.{args.model}.{args.model}_models' +
