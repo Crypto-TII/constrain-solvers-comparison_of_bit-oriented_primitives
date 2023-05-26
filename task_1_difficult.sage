@@ -113,7 +113,8 @@ if __name__ == "__main__":
 
         if args.model == 'cp':
             module = import_module(
-                f'claasp.cipher_modules.models.{args.model}.{args.model}_models.{args.model}_xor_differential_trail_search_model')
+                f'claasp.cipher_modules.models.{args.model}.{args.model}_models'
+                f'.{args.model}_xor_differential_trail_search_model')
             model_class = getattr(module, f'{args.model.capitalize()}XorDifferentialTrailSearchModel')
         else:
             module = import_module(

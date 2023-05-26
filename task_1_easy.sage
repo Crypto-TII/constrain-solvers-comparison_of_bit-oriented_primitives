@@ -148,7 +148,7 @@ if __name__ == "__main__":
                         else:
                             module = import_module(
                                 f'claasp.cipher_modules.models.{args.model}.{args.model}_models' +
-                                f'{args.model}_xor_differential_model')
+                                f'.{args.model}_xor_differential_model')
                             model_capitalised = args.model.capitalize()
                             model_class = getattr(module, f'{model_capitalised}XorDifferentialModel')
                         model = model_class(cipher)
