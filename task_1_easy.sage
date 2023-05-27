@@ -14,15 +14,14 @@ from claasp.cipher_modules.models.utils import set_fixed_variables
 
 
 sys.path.insert(0, "/home/sage/claasp")
-
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-parser = argparse.ArgumentParser(description='compare script')
-
-parser.add_argument('-m', action="store", dest="model", default='milp')
-
-args = parser.parse_args()
 files_list = get_ciphers()
+
+
+parser = argparse.ArgumentParser(description='task 1')
+parser.add_argument('-m', action="store", dest="model", default='sat')
+args = parser.parse_args()
 
 
 def remove_repetitions(param):
@@ -62,7 +61,7 @@ def generate_parameters(creator_file):
     return creator, available_parameters
 
 
-def generate_fixed_variables(cipher, test):
+def generate_fixed_variables(cipher):
 
     fixed_variables = []
 
@@ -75,7 +74,7 @@ def generate_fixed_variables(cipher, test):
                 list(range(plaintext_size)),
                 [0] * plaintext_size))
 
-    if 'key' in cipher.inputs and 'differential' in test:
+    if 'key' in cipher.inputs:
         key_size = cipher.inputs_bit_size[cipher.inputs.index('key')]
 
         if cipher.type != 'hash_function':
@@ -122,7 +121,6 @@ if __name__ == "__main__":
                         with open(f'quick_results/{args.model}/results_{number_of_rounds}.csv', 'a') as table:
                             newline = [
                                 'Cipher',
-                                'Test',
                                 'Model',
                                 'Building time',
                                 'Solving time',
@@ -134,10 +132,10 @@ if __name__ == "__main__":
 
                     with open(f'quick_results/{args.model}/results_{number_of_rounds}.csv', 'a') as table:
                         parameters['number_of_rounds'] = number_of_rounds
-                        if creator_file in list(failure[0] for failure in failure_queue[solver]):
+                        if creator_file in [failure[0] for failure in failure_queue[solver]]:
                             break
                         cipher = creator(**parameters)
-                        fixed_variables = generate_fixed_variables(cipher, test)
+                        fixed_variables = generate_fixed_variables(cipher)
 
                         if args.model == 'cp':
                             module = import_module(
@@ -147,7 +145,7 @@ if __name__ == "__main__":
                             model_class = getattr(module, f'{model_capitalised}XorDifferentialTrailSearchModel')
                         else:
                             module = import_module(
-                                f'claasp.cipher_modules.models.{args.model}.{args.model}_models' +
+                                f'claasp.cipher_modules.models.{args.model}.{args.model}_models'
                                 f'.{args.model}_xor_differential_model')
                             model_capitalised = args.model.capitalize()
                             model_class = getattr(module, f'{model_capitalised}XorDifferentialModel')
@@ -160,7 +158,7 @@ if __name__ == "__main__":
                             break
                         build_time, solve_time, memory, trail_num, weight = handle_solution(solution, args.model)
                         max_time = build_time + solve_time
-                        newline = [model.cipher_id, test, model.__class__.__name__,
+                        newline = [model.cipher_id, model.__class__.__name__,
                                    build_time, solve_time, memory, trail_num, weight, solver]
                         print(newline)
                         writer(table).writerow(newline)
@@ -178,7 +176,7 @@ if __name__ == "__main__":
                 for number_of_rounds in range(parameters['number_of_rounds'], 7):
                     parameters['number_of_rounds'] = number_of_rounds
                     cipher = creator(**parameters)
-                    fixed_variables = generate_fixed_variables(cipher, test)
+                    fixed_variables = generate_fixed_variables(cipher)
 
                     module = import_module(
                         f'claasp.cipher_modules.models.{args.model}.{args.model}_models'
@@ -204,7 +202,6 @@ if __name__ == "__main__":
                     build_time, solve_time, memory, trail_num, weight = handle_solution(solution, args.model)
                     newline = [
                         model.cipher_id,
-                        test,
                         model.__class__.__name__,
                         build_time,
                         solve_time,
