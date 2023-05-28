@@ -48,5 +48,27 @@ Tests are completely automatized and `csv` files will be produced as output.
   ```
   Note that the second command will clone the repository into a directory called
   `scripts`.
-- You are ready to go. Just enter the `scripts` directory and type `sage
-  <test-name>`. You should be able to see logs and output files.
+- You are ready to go. Start the container created for CLAASP and type `sage
+  scripts/<test-name>`. You should be able to see logs and output files in the
+  scripts directory.
+
+### Task 1
+
+The task 1 is the search for an optimal differential trail.
+
+- **Easy**: in order to run tests for easy instances and only one model just
+  type:
+  ```bash
+  # sage scripts/task_1_easy.sage -m MODEL
+  ```
+  replace `MODEL` with `sat`, `smt`, `milp` or `cp`. The default is `sat`.
+- **Easy parallelized**: if you have enough computational resources, you can go
+  straight for parallelization:
+  ```bash
+  # sage scripts/task_1_easy_parallelization.sage -m MODELS
+  ```
+  replace `MODELS` with models you want to test. For instance, say that you want
+  just tests for SAT and CP, you need to run:
+  ```bash
+  # sage scripts/task_1_easy_parallelization.sage -m sat cp
+  ```

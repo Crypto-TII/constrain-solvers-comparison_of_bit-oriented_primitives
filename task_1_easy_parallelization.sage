@@ -8,8 +8,10 @@ from claasp.utils.sage_scripts import get_ciphers, get_cipher_type
 
 
 parser = argparse.ArgumentParser(description='parallelization of task 1')
-parser.add_argument('--models', '-m', action="store", default=['sat'])
+parser.add_argument('--models', '-m', action="extend", nargs='*',
+                    default=['sat', 'smt', 'milp', 'cp'])
 args = parser.parse_args()
+
 
 def kill_process_and_children(pid, sig=15):
     try:
@@ -22,17 +24,15 @@ def kill_process_and_children(pid, sig=15):
         child_process.send_signal(sig)
     proc.send_signal(sig)
 
-if not os.path.exists('LOGS/'):
-    os.makedirs('LOGS/')
 
-if not os.path.exists('LOGS/task_1_easy/'):
-    os.makedirs('LOGS/task_1_easy/')
+if not os.path.exists('scripts/LOGS/task_1_easy/'):
+    os.makedirs('scripts/LOGS/task_1_easy/')
 
 processes = [
     Popen(
         ['sage', 'scripts/task_1_easy.sage', '-m', model],
-        stdout=open(f'LOGS/task_1_easy/{model}.txt', 'a'),
-        stderr=open(f'LOGS/task_1_easy/{model}_ERR.txt', 'a')) for model in models]
+        stdout=open(f'scripts/LOGS/task_1_easy/{model}.txt', 'a'),
+        stderr=open(f'scripts/LOGS/task_1_easy/{model}_ERR.txt', 'a')) for model in args.models]
 
 time = 0.0
 
