@@ -94,8 +94,8 @@ def timeout(func, args=(), kwargs={}, timeout_duration=600):
 
 if __name__ == "__main__":
 
-    if not os.path.exists(f'quick_results/{args.model}'):
-        os.makedirs(f'quick_results/{args.model}')
+    if not os.path.exists(f'scripts/quick_results/{args.model}'):
+        os.makedirs(f'scripts/quick_results/{args.model}')
 
     failure_queue = dict.fromkeys(constants.MODEL_LIST[args.model]['solver_list'])
     for solver in failure_queue:
@@ -117,8 +117,8 @@ if __name__ == "__main__":
                     number_of_rounds += 1
                     if max_time > 2.0 and number_of_rounds > 6:
                         break
-                    if not os.path.exists(f'quick_results/{args.model}/results_{number_of_rounds}.csv'):
-                        with open(f'quick_results/{args.model}/results_{number_of_rounds}.csv', 'a') as table:
+                    if not os.path.exists(f'scripts/quick_results/{args.model}/results_{number_of_rounds}.csv'):
+                        with open(f'scripts/quick_results/{args.model}/results_{number_of_rounds}.csv', 'a') as table:
                             newline = [
                                 'Cipher',
                                 'Model',
@@ -130,7 +130,7 @@ if __name__ == "__main__":
                                 'Solver']
                             writer(table).writerow(newline)
 
-                    with open(f'quick_results/{args.model}/results_{number_of_rounds}.csv', 'a') as table:
+                    with open(f'scripts/quick_results/{args.model}/results_{number_of_rounds}.csv', 'a') as table:
                         parameters['number_of_rounds'] = number_of_rounds
                         if creator_file in [failure[0] for failure in failure_queue[solver]]:
                             break
@@ -210,5 +210,5 @@ if __name__ == "__main__":
                         weight,
                         solver]
                     print(newline)
-                    with open(f'quick_results/{args.model}/results_{number_of_rounds}.csv', 'a') as table:
+                    with open(f'scripts/quick_results/{args.model}/results_{number_of_rounds}.csv', 'a') as table:
                         writer(table).writerow(newline)
