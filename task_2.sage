@@ -10,8 +10,9 @@ from claasp.cipher_modules.models.milp.milp_model import MilpModel
 from claasp.cipher_modules.models.smt.smt_model import SmtModel
 from claasp.cipher_modules.models.sat.sat_model import SatModel
 from claasp.cipher_modules.models.cp.cp_model import CpModel
-from claasp.utils.sage_scripts import get_ciphers, get_cipher_type
 from claasp.cipher_modules.models.utils import set_fixed_variables
+from claasp.utils.sage_scripts import get_ciphers, get_cipher_type
+from claasp.name_mappings import INPUT_KEY, INPUT_PLAINTEXT
 
 
 sys.path.insert(0, "/home/sage/claasp")
@@ -19,10 +20,9 @@ sys.path.insert(0, "/home/sage/claasp")
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 parser = argparse.ArgumentParser(description='compare script')
-
-parser.add_argument('-m', action="store", dest="model", default='milp')
-
+parser.add_argument('-m', action="store", dest="model", default='sat')
 args = parser.parse_args()
+
 files_list = get_ciphers()
 
 
@@ -43,7 +43,7 @@ def handle_solution(solution, model):
         if args.model == 'cp':
             solve_time = solution[0]['solving_time_seconds']
         else:
-            solve_time = sum([T['solving_time_seconds'] for T in solution])
+            solve_time = sum([sol['solving_time_seconds'] for sol in solution])
 
         return build_time, solve_time, memory, len(solution), weight
 
@@ -63,28 +63,36 @@ def generate_parameters(creator_file):
     return creator, available_parameters
 
 
-def generate_fixed_variables(cipher, test):
+def generate_fixed_variables(cipher):
 
     fixed_variables = []
 
-    if 'plaintext' in cipher.inputs:
-        plaintext_size = cipher.inputs_bit_size[cipher.inputs.index('plaintext')]
+    if INPUT_PLAINTEXT in cipher.inputs:
+        plaintext_size = cipher.inputs_bit_size[cipher.inputs.index(INPUT_PLAINTEXT)]
         fixed_variables.append(
             set_fixed_variables(
-                'plaintext',
+                INPUT_PLAINTEXT,
                 'not_equal',
-                list(
-                    range(plaintext_size)),
-                [0] *
-                plaintext_size))
+                range(plaintext_size),
+                (0,) * plaintext_size))
 
-    if 'key' in cipher.inputs and 'differential' in test:
-        key_size = cipher.inputs_bit_size[cipher.inputs.index('key')]
+    if INPUT_KEY in cipher.inputs:
+        key_size = cipher.inputs_bit_size[cipher.inputs.index(INPUT_KEY)]
 
         if cipher.type != 'hash_function':
-            fixed_variables.append(set_fixed_variables('key', 'equal', list(range(key_size)), [0] * key_size))
+            fixed_variables.append(
+                set_fixed_variables(
+                    INPUT_KEY,
+                    'equal',
+                    range(key_size),
+                    (0,) * key_size))
         else:
-            fixed_variables.append(set_fixed_variables('key', 'not_equal', list(range(key_size)), [0] * key_size))
+            fixed_variables.append(
+                set_fixed_variables(
+                    INPUT_KEY,
+                    'not_equal',
+                    range(key_size),
+                    (0,) * key_size))
 
     return fixed_variables
 

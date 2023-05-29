@@ -11,6 +11,7 @@ from importlib import import_module
 from scripts.constants import fixed_differential
 from claasp.utils.sage_scripts import get_cipher_type, get_ciphers
 from claasp.cipher_modules.models.utils import set_fixed_variables, integer_to_bit_list
+from claasp.name_mappings import INPUT_KEY, INPUT_PLAINTEXT
 
 sys.path.insert(0, "/home/sage/claasp")
 
@@ -89,8 +90,8 @@ if __name__ == "__main__":
         plaintext_differential = fixed_differential[args.cipher][0]
         ciphertext_differential = fixed_differential[args.cipher][1]
         plaintext = set_fixed_variables(
-            'plaintext', 'equal', range(pt_size), integer_to_bit_list(plaintext_differential, pt_size, 'big'))
-        key = set_fixed_variables('key', 'equal', range(key_size), integer_to_bit_list(0, key_size, 'big'))
+            INPUT_PLAINTEXT, 'equal', range(pt_size), integer_to_bit_list(plaintext_differential, pt_size, 'big'))
+        key = set_fixed_variables(INPUT_KEY, 'equal', range(key_size), integer_to_bit_list(0, key_size, 'big'))
         comps = cipher.get_all_components()
         output_component = cipher.get_all_components()[-1].id
         output = set_fixed_variables(

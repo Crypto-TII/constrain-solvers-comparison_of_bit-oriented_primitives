@@ -14,12 +14,11 @@ from claasp.utils.sage_scripts import get_ciphers, get_cipher_type
 from claasp.cipher_modules.models.utils import set_fixed_variables
 
 
-sys.path.insert(_sage_const_0, "/home/sage/tii-claasp")
+sys.path.insert(0, "/home/sage/tii-claasp")
 
 parser = argparse.ArgumentParser(description='compare script')
 
 parser.add_argument('-m', action="store", dest="model", default='sat')
-parser.add_argument('-t', action="store", dest="test", default='find_lowest_weight_xor_differential_trail')
 parser.add_argument('-c', action="store", dest="cipher", default='speck_block_cipher.py')
 parser.add_argument('-s', action="store", dest="solver", default='cryptominisat')
 parser.add_argument('-p', action="store", dest="param", default=str({}))
@@ -37,7 +36,7 @@ def handle_solution(solution, model):
         memory = solution[0]['memory_megabytes']
         weight = solution[0]['total_weight']
         if args.model == 'cp':
-            solve_time = solution[_sage_const_0]['solving_time_seconds']
+            solve_time = solution[0]['solving_time_seconds']
         else:
             solve_time = sum([sol['solving_time_seconds'] for sol in solution])
 
@@ -56,7 +55,7 @@ def generate_creator(creator_file):
     return creator
 
 
-def generate_fixed_variables(cipher, test):
+def generate_fixed_variables(cipher):
 
     if 'plaintext' in cipher.inputs:
         plaintext_size = cipher.inputs_bit_size[cipher.inputs.index('plaintext')]
@@ -70,17 +69,22 @@ def generate_fixed_variables(cipher, test):
                 'plaintext',
                 'not_equal',
                 range(plaintext_size),
-                (_sage_const_0,) * plaintext_size))
-    if 'key' in cipher.inputs and 'differential' in test:
+                (0,) * plaintext_size))
+    if 'key' in cipher.inputs:
         if cipher.type == 'hash_function':
             fixed_variables.append(
                 set_fixed_variables(
                     'key',
                     'not_equal',
                     range(key_size),
-                    (_sage_const_0,) * key_size))
+                    (0,) * key_size))
         else:
-            fixed_variables.append(set_fixed_variables('key', 'equal', range(key_size), (_sage_const_0,) * key_size))
+            fixed_variables.append(
+                set_fixed_variables(
+                    'key',
+                    'equal',
+                    range(key_size),
+                    (0,) * key_size))
     return fixed_variables
 
 
@@ -93,7 +97,6 @@ if __name__ == "__main__":
         with open(f'famous_results/{args.cipher}.csv', 'a') as table:
             newline = [
                 'Cipher',
-                'Test',
                 'Model',
                 'Building time',
                 'Solving time',
