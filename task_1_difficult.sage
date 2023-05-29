@@ -12,6 +12,7 @@ from claasp.cipher_modules.models.sat.sat_model import SatModel
 from claasp.cipher_modules.models.cp.cp_model import CpModel
 from claasp.utils.sage_scripts import get_ciphers, get_cipher_type
 from claasp.cipher_modules.models.utils import set_fixed_variables
+from claasp.name_mappings import INPUT_KEY, INPUT_PLAINTEXT
 
 
 sys.path.insert(0, "/home/sage/tii-claasp")
@@ -57,31 +58,31 @@ def generate_creator(creator_file):
 
 def generate_fixed_variables(cipher):
 
-    if 'plaintext' in cipher.inputs:
-        plaintext_size = cipher.inputs_bit_size[cipher.inputs.index('plaintext')]
-    if 'key' in cipher.inputs:
-        key_size = cipher.inputs_bit_size[cipher.inputs.index('key')]
+    if INPUT_PLAINTEXT in cipher.inputs:
+        plaintext_size = cipher.inputs_bit_size[cipher.inputs.index(INPUT_PLAINTEXT)]
+    if INPUT_KEY in cipher.inputs:
+        key_size = cipher.inputs_bit_size[cipher.inputs.index(INPUT_KEY)]
 
     fixed_variables = []
-    if 'plaintext' in cipher.inputs:
+    if INPUT_PLAINTEXT in cipher.inputs:
         fixed_variables.append(
             set_fixed_variables(
-                'plaintext',
+                INPUT_PLAINTEXT,
                 'not_equal',
                 range(plaintext_size),
                 (0,) * plaintext_size))
-    if 'key' in cipher.inputs:
+    if INPUT_KEY in cipher.inputs:
         if cipher.type == 'hash_function':
             fixed_variables.append(
                 set_fixed_variables(
-                    'key',
+                    INPUT_KEY,
                     'not_equal',
                     range(key_size),
                     (0,) * key_size))
         else:
             fixed_variables.append(
                 set_fixed_variables(
-                    'key',
+                    INPUT_KEY,
                     'equal',
                     range(key_size),
                     (0,) * key_size))
