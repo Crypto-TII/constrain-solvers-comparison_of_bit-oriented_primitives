@@ -25,7 +25,6 @@ if __name__ == '__main__':
                         default=['sat', 'smt', 'milp', 'cp'])
     args = parser.parse_args()
 
-
     if not os.path.exists('scripts/LOGS/task_1_easy/'):
         os.makedirs('scripts/LOGS/task_1_easy/')
 
