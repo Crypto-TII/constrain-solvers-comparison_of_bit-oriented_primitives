@@ -7,8 +7,8 @@ from subprocess import Popen
 
 sys.path.insert(0, "/home/sage/claasp")
 
-if not os.path.exists('LOGS/task_3'):
-    os.makedirs('LOGS/task_3')
+if not os.path.exists('scripts/LOGS/task_3'):
+    os.makedirs('scripts/LOGS/task_3')
 
 commands = []
 for cipher in ('speck_block_cipher.py', 'midori_block_cipher'):
@@ -21,8 +21,8 @@ for cipher in ('speck_block_cipher.py', 'midori_block_cipher'):
 processes = [
     Popen(
         i,
-        stdout=open(f'LOGS/task_3/{i[7].split("_")[0]}.txt', 'a'),
-        stderr=open(f'LOGS/task_3/{i[7].split("_")[0]}_ERR.txt', 'a')) for i in commands]
+        stdout=open(f'scripts/LOGS/task_3/{i[7].split("_")[0]}.txt', 'a'),
+        stderr=open(f'scripts/LOGS/task_3/{i[7].split("_")[0]}_ERR.txt', 'a')) for i in commands]
 
 for process in processes:
     process.communicate()

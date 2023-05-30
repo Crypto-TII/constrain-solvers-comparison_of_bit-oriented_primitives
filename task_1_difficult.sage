@@ -66,48 +66,35 @@ def generate_fixed_variables(cipher):
     fixed_variables = []
     if INPUT_PLAINTEXT in cipher.inputs:
         fixed_variables.append(
-            set_fixed_variables(
-                INPUT_PLAINTEXT,
-                'not_equal',
-                range(plaintext_size),
-                (0,) * plaintext_size))
+            set_fixed_variables(INPUT_PLAINTEXT, 'not_equal', range(plaintext_size), (0,) * plaintext_size))
     if INPUT_KEY in cipher.inputs:
         if cipher.type == 'hash_function':
             fixed_variables.append(
-                set_fixed_variables(
-                    INPUT_KEY,
-                    'not_equal',
-                    range(key_size),
-                    (0,) * key_size))
+                set_fixed_variables(INPUT_KEY, 'not_equal', range(key_size), (0,) * key_size))
         else:
             fixed_variables.append(
-                set_fixed_variables(
-                    INPUT_KEY,
-                    'equal',
-                    range(key_size),
-                    (0,) * key_size))
+                set_fixed_variables(INPUT_KEY, 'equal', range(key_size), (0,) * key_size))
     return fixed_variables
 
 
 if __name__ == "__main__":
 
-    if not os.path.exists('famous_results/'):
-        os.makedirs('famous_results/')
+    if not os.path.exists('scripts/famous_results/'):
+        os.makedirs('scripts/famous_results/')
 
-    if not os.path.exists(f'famous_results/{args.cipher}.csv'):
-        with open(f'famous_results/{args.cipher}.csv', 'a') as table:
+    if not os.path.exists(f'scripts/famous_results/{args.cipher}.csv'):
+        with open(f'scripts/famous_results/{args.cipher}.csv', 'a') as table:
             newline = [
                 'Cipher',
                 'Model',
                 'Building time',
                 'Solving time',
                 'Memory',
-                'Number of trails',
                 'Weight',
                 'Solver']
             writer(table).writerow(newline)
 
-    with open(f'famous_results/{args.cipher}.csv', 'a') as table:
+    with open(f'scripts/famous_results/{args.cipher}.csv', 'a') as table:
         creator = generate_creator(args.cipher)
         parameters = literal_eval(args.param)
         rounds = literal_eval(args.rounds)
