@@ -28,7 +28,7 @@ parser.add_argument('-w', action="store", dest="weight", default='10')
 args = parser.parse_args()
 
 
-def handle_solution(solution, model):
+def handle_solution(solution):
     if isinstance(solution, str):
         return 'Timed out', 'Timed out', 'Timed out', 'Timed out', 'Timed out'
 
@@ -43,7 +43,7 @@ def handle_solution(solution, model):
 
         return build_time, solve_time, memory, len(solution), weight
 
-    return solution['building_time_seconds'], solution['solving_time_seconds'], solution['memory_megabytes'], '/', solution['total_weight']
+    return solution['building_time_seconds'], solution['solving_time_seconds'], solution['memory_megabytes'], solution['total_weight']
 
 
 def generate_creator(creator_file):
@@ -113,7 +113,7 @@ if __name__ == "__main__":
         rounds = literal_eval(args.rounds)
         parameters['number_of_rounds'] = rounds
         cipher = creator(**parameters)
-        fixed_variables = generate_fixed_variables(cipher, args.test)
+        fixed_variables = generate_fixed_variables(cipher)
 
         if args.model == 'cp':
             module = import_module(
@@ -128,24 +128,14 @@ if __name__ == "__main__":
         print(f'running {args.test} on {model.cipher_id}')
         solution = model.find_lowest_weight_xor_differential_trail(
             fixed_values=fixed_variables, solver_name=args.solver)
-        if 'all' in args.test:
-            weight = find_weight(args.solver, args.model, model.cipher_id)
-            print(f'testing with weight {weight}')
-            solution = model.find_all_xor_differential_trails_with_fixed_weight(
-                fixed_weight=weight, fixed_values=fixed_variables, solver_name=args.solver)
-        elif 'one' in args.test:
-            solution = model.find_one_xor_differential_trail_with_fixed_weight(
-                fixed_weight=weight, fixed_values=fixed_variables, solver_name=args.solver)
 
-        build_time, solve_time, memory, trail_num, weight_found = handle_solution(solution, args.model)
+        build_time, solve_time, memory, weight_found = handle_solution(solution)
         newline = [
             model.cipher_id,
-            args.test,
             model.__class__.__name__,
             build_time,
             solve_time,
             memory,
-            trail_num,
             weight_found,
             args.solver]
         print(newline)

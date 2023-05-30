@@ -11,16 +11,12 @@ def kill_process_and_children(pid, sig=15):
     try:
         proc = psutil.Process(pid)
     except psutil.NoSuchProcess as e:
-        print('couldnt kill process since it no longer exists')
+        print('couldn\'t kill process since it no longer exists')
         return
 
     for child_process in proc.children(recursive=True):
         child_process.send_signal(sig)
     proc.send_signal(sig)
-
-
-if not os.path.exists('LOGS/'):
-    os.makedirs('LOGS/')
 
 
 if not os.path.exists('LOGS/task_2/'):

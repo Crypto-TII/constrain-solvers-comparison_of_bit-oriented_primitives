@@ -1,25 +1,26 @@
 
 EXCLUDE_LIST = [
-    'keccak_invertible_permutation.py',
-    'grain_core_permutation.py',
-    'aes_block_cipher.py',
-    'sparx_block_cipher.py',
-    'twofish_block_cipher.py',
     "__init__.py",
-    "lowmc_block_cipher.py",
+    'aes_block_cipher.py',
     'chacha_stream_cipher.py',
-    "sparkle_permutation.py",
-    "spongent_pi_permutation.py",
-    "raiden_block_cipher.py",
     "constant_block_cipher.py",
-    "photon_permutation.py",
-    "spongent_pi_precomputation_permutation.py",
+    "fancy_block_cipher.py",
+    'grain_core_permutation.py',
+    "identity_block_cipher.py",
+    "kasumi_block_cipher.py",
+    'keccak_invertible_permutation.py',
+    "lowmc_block_cipher.py",
     "lowmc_constants_block_cipher.py",
     "lowmc_generate_matrices_block_cipher.py",
-    "fancy_block_cipher.py",
-    "identity_block_cipher.py",
-    "tinyjambu_permutation.py",
-    "tinyjambu_32bits_word_permutation.py"
+    "photon_permutation.py",
+    'sparx_block_cipher.py',
+    'twofish_block_cipher.py',
+    "raiden_block_cipher.py",
+    "sparkle_permutation.py",
+    "spongent_pi_permutation.py",
+    "spongent_pi_precomputation_permutation.py",
+    "tinyjambu_32bits_word_permutation.py",
+    "tinyjambu_permutation.py"
 ]
 
 MODEL_LIST = {
@@ -74,7 +75,7 @@ MODEL_LIST = {
             'Choco',
             'ortools'
         ],
-        'exclude_list': EXCLUDE_LIST
+        'exclude_list': EXCLUDE_LIST + ['des_exact_key_lenght_block_cipher.py']
     },
 }
 

@@ -53,11 +53,11 @@ def handle_solution(solution, model):
 
 if __name__ == "__main__":
 
-    if not os.path.exists(f'fixed_differential_results/'):
-        os.makedirs(f'fixed_differential_results/')
+    if not os.path.exists(f'scripts/task_3_results/'):
+        os.makedirs(f'scripts/task_3_results/')
 
-    if not os.path.exists(f'fixed_differential_results/{args.cipher}.csv'):
-        with open(f'fixed_differential_results/{args.cipher}.csv', 'a') as table:
+    if not os.path.exists(f'scripts/task_3_results/{args.cipher}.csv'):
+        with open(f'scripts/task_3_results/{args.cipher}.csv', 'a') as table:
             newline = [
                 'Cipher',
                 'Model',
@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
     pt_size = fixed_differential[args.cipher][5]
     key_size = fixed_differential[args.cipher][6]
-    with open(f'fixed_differential_results/{args.cipher}_{args.rounds}_rounds.csv', 'a') as table:
+    with open(f'scripts/task_3_results/{args.cipher}_{args.rounds}_rounds.csv', 'a') as table:
         creator = generate_creator(args.cipher)
         parameters = {'block_bit_size': pt_size, 'key_bit_size': key_size, 'number_of_rounds': args.rounds}
         cipher = creator(**parameters)

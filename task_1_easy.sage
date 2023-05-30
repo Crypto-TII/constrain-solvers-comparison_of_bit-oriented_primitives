@@ -34,7 +34,7 @@ def remove_repetitions(param):
     return [dict(t) for t in {tuple(d.items()) for d in param}]
 
 
-def handle_solution(solution, model):
+def handle_solution(solution):
 
     if isinstance(solution, list):
         build_time = solution[0]['building_time_seconds']
@@ -47,7 +47,7 @@ def handle_solution(solution, model):
 
         return build_time, solve_time, memory, len(solution), weight
 
-    return solution['building_time_seconds'], solution['solving_time_seconds'], solution['memory_megabytes'], '/', solution['total_weight']
+    return solution['building_time_seconds'], solution['solving_time_seconds'], solution['memory_megabytes'], solution['total_weight']
 
 
 def generate_parameters(creator_file):
@@ -96,8 +96,8 @@ def timeout(func, args=(), kwargs={}, timeout_duration=600):
 
 if __name__ == "__main__":
 
-    if not os.path.exists(f'scripts/quick_results/{args.model}'):
-        os.makedirs(f'scripts/quick_results/{args.model}')
+    if not os.path.exists(f'scripts/task_1_easy_results/{args.model}'):
+        os.makedirs(f'scripts/task_1_easy_results/{args.model}')
 
     failure_queue = dict.fromkeys(constants.MODEL_LIST[args.model]['solver_list'])
     for solver in failure_queue:
@@ -119,20 +119,19 @@ if __name__ == "__main__":
                     number_of_rounds += 1
                     if max_time > 2.0 and number_of_rounds > 6:
                         break
-                    if not os.path.exists(f'scripts/quick_results/{args.model}/results_{number_of_rounds}.csv'):
-                        with open(f'scripts/quick_results/{args.model}/results_{number_of_rounds}.csv', 'a') as table:
+                    if not os.path.exists(f'scripts/task_1_easy_results/{args.model}/results_{number_of_rounds}.csv'):
+                        with open(f'scripts/task_1_easy_results/{args.model}/results_{number_of_rounds}.csv', 'a') as table:
                             newline = [
                                 'Cipher',
                                 'Model',
                                 'Building time',
                                 'Solving time',
                                 'Memory',
-                                'Number of trails',
                                 'Weight',
                                 'Solver']
                             writer(table).writerow(newline)
 
-                    with open(f'scripts/quick_results/{args.model}/results_{number_of_rounds}.csv', 'a') as table:
+                    with open(f'scripts/task_1_easy_results/{args.model}/results_{number_of_rounds}.csv', 'a') as table:
                         parameters['number_of_rounds'] = number_of_rounds
                         if creator_file in [failure[0] for failure in failure_queue[solver]]:
                             break
@@ -158,10 +157,10 @@ if __name__ == "__main__":
                             print(f'{creator_file} failed on {parameters["number_of_rounds"]}')
                             failure_queue[solver].append([creator_file, parameters])
                             break
-                        build_time, solve_time, memory, trail_num, weight = handle_solution(solution, args.model)
+                        build_time, solve_time, memory, weight = handle_solution(solution)
                         max_time = build_time + solve_time
                         newline = [model.cipher_id, model.__class__.__name__,
-                                   build_time, solve_time, memory, trail_num, weight, solver]
+                                   build_time, solve_time, memory, weight, solver]
                         print(newline)
                         writer(table).writerow(newline)
 
@@ -201,16 +200,15 @@ if __name__ == "__main__":
                     if isinstance(solution, str) and ([creator_file, parameters] in failure_queue[solver]):
                         print(f'{creator_file} failed again on {number_of_rounds}')
                         break
-                    build_time, solve_time, memory, trail_num, weight = handle_solution(solution, args.model)
+                    build_time, solve_time, memory, weight = handle_solution(solution)
                     newline = [
                         model.cipher_id,
                         model.__class__.__name__,
                         build_time,
                         solve_time,
                         memory,
-                        trail_num,
                         weight,
                         solver]
                     print(newline)
-                    with open(f'scripts/quick_results/{args.model}/results_{number_of_rounds}.csv', 'a') as table:
+                    with open(f'scripts/task_1_easy_results/{args.model}/results_{number_of_rounds}.csv', 'a') as table:
                         writer(table).writerow(newline)
