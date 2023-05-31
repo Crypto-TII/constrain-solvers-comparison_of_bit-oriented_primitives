@@ -1,12 +1,13 @@
 import os
 import sys
+import constants
+import famous_results
 
 from subprocess import Popen
 from time import sleep
-from scripts.sage_scripts import famous_results, constants
 
 
-sys.path.insert(0, "/home/sage/claasp")
+sys.path.insert(0, "/home/sage/tii-claasp")
 
 if not os.path.exists('scripts/LOGS/task_1_difficult/'):
     os.makedirs('scripts/LOGS/task_1_difficult/')

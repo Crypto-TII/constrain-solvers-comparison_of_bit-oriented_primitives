@@ -8,7 +8,7 @@ from ast import literal_eval
 from csv import writer
 from importlib import import_module
 
-from scripts.constants import fixed_differential
+from constants import fixed_differential
 from claasp.utils.sage_scripts import get_cipher_type, get_ciphers
 from claasp.cipher_modules.models.utils import set_fixed_variables, integer_to_bit_list
 from claasp.name_mappings import INPUT_KEY, INPUT_PLAINTEXT

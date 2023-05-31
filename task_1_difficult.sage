@@ -1,19 +1,13 @@
 import argparse
 import os
 import sys
-
 from ast import literal_eval
-from csv import writer, reader
+from csv import writer
 from importlib import import_module
 
-from claasp.cipher_modules.models.milp.milp_model import MilpModel
-from claasp.cipher_modules.models.smt.smt_model import SmtModel
-from claasp.cipher_modules.models.sat.sat_model import SatModel
-from claasp.cipher_modules.models.cp.cp_model import CpModel
-from claasp.utils.sage_scripts import get_ciphers, get_cipher_type
 from claasp.cipher_modules.models.utils import set_fixed_variables
 from claasp.name_mappings import INPUT_KEY, INPUT_PLAINTEXT
-
+from claasp.utils.sage_scripts import get_cipher_type
 
 sys.path.insert(0, "/home/sage/tii-claasp")
 
@@ -79,11 +73,11 @@ def generate_fixed_variables(cipher):
 
 if __name__ == "__main__":
 
-    if not os.path.exists('scripts/famous_results/'):
-        os.makedirs('scripts/famous_results/')
+    if not os.path.exists('scripts/task_1_difficult/'):
+        os.makedirs('scripts/task_1_difficult/')
 
-    if not os.path.exists(f'scripts/famous_results/{args.cipher}.csv'):
-        with open(f'scripts/famous_results/{args.cipher}.csv', 'a') as table:
+    if not os.path.exists(f'scripts/task_1_difficult/{args.cipher}.csv'):
+        with open(f'scripts/task_1_difficult/{args.cipher}.csv', 'a') as table:
             newline = [
                 'Cipher',
                 'Model',
@@ -94,7 +88,7 @@ if __name__ == "__main__":
                 'Solver']
             writer(table).writerow(newline)
 
-    with open(f'scripts/famous_results/{args.cipher}.csv', 'a') as table:
+    with open(f'scripts/task_1_difficult/{args.cipher}.csv', 'a') as table:
         creator = generate_creator(args.cipher)
         parameters = literal_eval(args.param)
         rounds = literal_eval(args.rounds)
