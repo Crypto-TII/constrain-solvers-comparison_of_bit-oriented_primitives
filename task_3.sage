@@ -13,8 +13,8 @@ from claasp.utils.sage_scripts import get_cipher_type, get_ciphers
 from claasp.cipher_modules.models.utils import set_fixed_variables, integer_to_bit_list
 from claasp.name_mappings import INPUT_KEY, INPUT_PLAINTEXT
 
-sys.path.insert(0, "/home/sage/claasp")
 
+sys.path.insert(0, "/home/sage/claasp")
 
 parser = argparse.ArgumentParser(description='fixed_differential test script')
 parser.add_argument('-m', action="store", dest="model", default='sat')
@@ -33,22 +33,6 @@ def generate_creator(creator_file):
             creator = creator_module.__dict__[name]
             break
     return creator
-
-
-def handle_solution(solution, model):
-
-    if isinstance(solution, list):
-        build_time = solution[0]['building_time_seconds']
-        memory = solution[0]['memory_megabytes']
-        weight = solution[0]['total_weight']
-        if args.model == 'cp':
-            solve_time = solution[0]['solving_time_seconds']
-        else:
-            solve_time = sum([T['solving_time_seconds'] for T in solution])
-
-        return build_time, solve_time, memory, len(solution), weight
-
-    return solution['building_time_seconds'], solution['solving_time_seconds'], solution['memory_megabytes'], '/', solution['total_weight']
 
 
 if __name__ == "__main__":
