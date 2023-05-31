@@ -73,11 +73,11 @@ def generate_fixed_variables(cipher):
 
 if __name__ == "__main__":
 
-    if not os.path.exists('scripts/task_1_difficult/'):
-        os.makedirs('scripts/task_1_difficult/')
+    if not os.path.exists('scripts/task_1_difficult_results/'):
+        os.makedirs('scripts/task_1_difficult_results/')
 
-    if not os.path.exists(f'scripts/task_1_difficult/{args.cipher}.csv'):
-        with open(f'scripts/task_1_difficult/{args.cipher}.csv', 'a') as table:
+    if not os.path.exists(f'scripts/task_1_difficult_results/{args.cipher}.csv'):
+        with open(f'scripts/task_1_difficult_results/{args.cipher}.csv', 'a') as table:
             newline = [
                 'Cipher',
                 'Model',
@@ -88,7 +88,7 @@ if __name__ == "__main__":
                 'Solver']
             writer(table).writerow(newline)
 
-    with open(f'scripts/task_1_difficult/{args.cipher}.csv', 'a') as table:
+    with open(f'scripts/task_1_difficult_results/{args.cipher}.csv', 'a') as table:
         creator = generate_creator(args.cipher)
         parameters = literal_eval(args.param)
         rounds = literal_eval(args.rounds)
@@ -106,7 +106,7 @@ if __name__ == "__main__":
                 f'claasp.cipher_modules.models.{args.model}.{args.model}_models.{args.model}_xor_differential_model')
             model_class = getattr(module, f'{args.model.capitalize()}XorDifferentialModel')
         model = model_class(cipher)
-        print(f'running {args.test} on {model.cipher_id}')
+        print(f'running on {model.cipher_id}')
         solution = model.find_lowest_weight_xor_differential_trail(
             fixed_values=fixed_variables, solver_name=args.solver)
 
