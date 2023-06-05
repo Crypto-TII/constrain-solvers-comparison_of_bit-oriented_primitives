@@ -14,7 +14,7 @@ from claasp.cipher_modules.models.utils import set_fixed_variables, integer_to_b
 from claasp.name_mappings import INPUT_KEY, INPUT_PLAINTEXT
 
 
-sys.path.insert(0, "/home/sage/claasp")
+sys.path.insert(0, "/home/sage/tii-claasp")
 
 parser = argparse.ArgumentParser(description='fixed_differential test script')
 parser.add_argument('-m', action="store", dest="model", default='sat')

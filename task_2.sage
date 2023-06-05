@@ -15,7 +15,7 @@ from claasp.utils.sage_scripts import get_ciphers, get_cipher_type
 from claasp.name_mappings import INPUT_KEY, INPUT_PLAINTEXT
 
 
-sys.path.insert(0, "/home/sage/claasp")
+sys.path.insert(0, "/home/sage/tii-claasp")
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
