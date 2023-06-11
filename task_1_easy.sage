@@ -6,10 +6,6 @@ import constants
 from importlib import import_module
 from csv import writer
 
-from claasp.cipher_modules.models.milp.milp_model import MilpModel
-from claasp.cipher_modules.models.smt.smt_model import SmtModel
-from claasp.cipher_modules.models.sat.sat_model import SatModel
-from claasp.cipher_modules.models.cp.cp_model import CpModel
 from claasp.cipher_modules.models.utils import set_fixed_variables
 from claasp.utils.sage_scripts import get_ciphers, get_cipher_type
 from claasp.name_mappings import INPUT_KEY, INPUT_PLAINTEXT
@@ -179,12 +175,19 @@ if __name__ == "__main__":
                     cipher = creator(**parameters)
                     fixed_variables = generate_fixed_variables(cipher)
 
-                    module = import_module(
-                        f'claasp.cipher_modules.models.{args.model}.{args.model}_models'
-                        f'.{args.model}_xor_differential_model')
-                    model_capitalised = args.model.capitalize()
-                    model_class = getattr(module, f'{model_capitalised}XorDifferentialModel')
-                    model = model_class(ciphers)
+                    if args.model == 'cp':
+                        module = import_module(
+                            f'claasp.cipher_modules.models.{args.model}.{args.model}_models'
+                            f'.{args.model}_xor_differential_trail_search_model')
+                        model_capitalised = args.model.capitalize()
+                        model_class = getattr(module, f'{model_capitalised}XorDifferentialTrailSearchModel')
+                    else:
+                        module = import_module(
+                            f'claasp.cipher_modules.models.{args.model}.{args.model}_models'
+                            f'.{args.model}_xor_differential_model')
+                        model_capitalised = args.model.capitalize()
+                        model_class = getattr(module, f'{model_capitalised}XorDifferentialModel')
+                    model = model_class(cipher)
 
                     solution = timeout(model.find_lowest_weight_xor_differential_trail,
                                        (fixed_variables, solver), timeout_duration=end_time)
