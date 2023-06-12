@@ -6,10 +6,6 @@ import constants
 from importlib import import_module
 from csv import writer, reader
 
-from claasp.cipher_modules.models.milp.milp_model import MilpModel
-from claasp.cipher_modules.models.smt.smt_model import SmtModel
-from claasp.cipher_modules.models.sat.sat_model import SatModel
-from claasp.cipher_modules.models.cp.cp_model import CpModel
 from claasp.cipher_modules.models.utils import set_fixed_variables
 from claasp.utils.sage_scripts import get_ciphers, get_cipher_type
 from claasp.name_mappings import INPUT_KEY, INPUT_PLAINTEXT
